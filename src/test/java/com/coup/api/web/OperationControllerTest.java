@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -38,9 +35,11 @@ public class OperationControllerTest {
         list.add(11);
         list.add(15);
         list.add(13);
-        OperationInput operationInput = new OperationInput(list, 9, 5);
+        //OperationInput operationInput = new OperationInput(list, 9, 5);
+        String operationInput = "{ \"scooters\": [11, 15, 13], \"C\": 9, \"P\": 5 }";
 
-        HttpEntity<OperationInput> entity = new HttpEntity<>(operationInput, headers);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(operationInput, headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
                 createURLWithPort("/operation/calculateMinimumNumberOfFleetEngineers"),
